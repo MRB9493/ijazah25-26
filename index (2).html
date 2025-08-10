@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulir Pendaftaran Siswa Baru</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        input[type="text"], input[type="email"], textarea {
+            text-transform: uppercase;
+        }
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+        .file-input-label {
+            cursor: pointer;
+            display: inline-block;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease-in-out;
+        }
+        /* Style untuk modal preview gambar */
+        #image-preview-modal.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="w-full max-w-lg mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8 my-8">
+        <div class="text-center mb-8">
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">Formulir Data Ijazah</h1>
+            <p class="text-gray-500 mt-2">Isi data dengan lengkap dan benar.</p>
+        </div>
+
+        <div id="notification" class="hidden rounded-lg p-4 mb-6 text-sm"></div>
+
+        <form id="data-form" class="space-y-6" novalidate>
+            <!-- Nama -->
+            <div>
+                <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">1. Nama Lengkap</label>
+                <input type="text" id="nama" name="Nama" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="SESUAI IJAZAH" required oninput="this.value = this.value.toUpperCase()">
+            </div>
+            <!-- Tempat Lahir -->
+            <div>
+                <label for="tempat-lahir" class="block text-sm font-medium text-gray-700 mb-1">2. Tempat Lahir</label>
+                <input type="text" id="tempat-lahir" name="Tempat Lahir" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="KOTA/KABUPATEN" required oninput="this.value = this.value.toUpperCase()">
+            </div>
+            <!-- Tanggal Lahir -->
+            <div>
+                <label for="tanggal-lahir" class="block text-sm font-medium text-gray-700 mb-1">3. Tanggal Lahir</label>
+                <input type="date" id="tanggal-lahir" name="Tanggal Lahir" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
+            </div>
+            <!-- NISN -->
+            <div>
+                <label for="nisn" class="block text-sm font-medium text-gray-700 mb-1">4. NISN</label>
+                <input type="number" id="nisn" name="NISN" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="10 DIGIT ANGKA" required>
+            </div>
+            <!-- Pilihan Jurusan -->
+            <div>
+                <label for="jurusan" class="block text-sm font-medium text-gray-700 mb-1">5. Pilihan Jurusan</label>
+                <select id="jurusan" name="Pilihan Jurusan" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
+                    <option value="" disabled selected>-- Pilih Salah Satu --</option>
+                    <option value="Agama 1">Agama 1</option>
+                    <option value="Agama 2">Agama 2</option>
+                    <option value="Tahfidz 1">Tahfidz 1</option>
+                    <option value="Tahfidz 2">Tahfidz 2</option>
+                    <option value="Reguler 1">Reguler 1</option>
+                    <option value="Reguler 2">Reguler 2</option>
+                    <option value="Reguler 3">Reguler 3</option>
+                    <option value="Reguler 4">Reguler 4</option>
+                    <option value="Reguler 5">Reguler 5</option>
+                    <option value="Reguler 6">Reguler 6</option>
+                    <option value="Reguler 7">Reguler 7</option>
+                </select>
+            </div>
+            <!-- Upload Ijazah -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">6. Upload Ijazah SD/MI</label>
+                <p class="text-xs text-gray-500 mb-2">Format: JPG/PNG. Klik gambar untuk preview.</p>
+                <input type="file" id="ijazah-file" name="Ijazah" class="hidden" accept="image/*" onchange="previewFile('ijazah-file', 'ijazah-preview', 'ijazah-filename')">
+                <label for="ijazah-file" class="file-input-label bg-blue-50 text-blue-700 hover:bg-blue-100">Pilih File</label>
+                <span id="ijazah-filename" class="text-sm text-gray-600 ml-3">Belum ada file dipilih</span>
+                <img id="ijazah-preview" class="mt-4 rounded-lg hidden w-full max-w-xs mx-auto cursor-pointer hover:opacity-80 transition-opacity" alt="Preview Ijazah" onclick="showImagePreview('ijazah-preview')">
+            </div>
+            <!-- Upload KK -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">7. Upload KK Terbaru</label>
+                <p class="text-xs text-gray-500 mb-2">Format: JPG/PNG. Klik gambar untuk preview.</p>
+                <input type="file" id="kk-file" name="KK" class="hidden" accept="image/*" onchange="previewFile('kk-file', 'kk-preview', 'kk-filename')">
+                <label for="kk-file" class="file-input-label bg-blue-50 text-blue-700 hover:bg-blue-100">Pilih File</label>
+                <span id="kk-filename" class="text-sm text-gray-600 ml-3">Belum ada file dipilih</span>
+                <img id="kk-preview" class="mt-4 rounded-lg hidden w-full max-w-xs mx-auto cursor-pointer hover:opacity-80 transition-opacity" alt="Preview KK" onclick="showImagePreview('kk-preview')">
+            </div>
+
+            <!-- Tombol Submit -->
+            <div class="pt-4">
+                <button type="submit" id="submit-button" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300 flex items-center justify-center">
+                    <span id="button-text">Kirim Data</span>
+                    <svg id="loading-spinner" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Modal untuk Preview GAMBAR -->
+    <div id="image-preview-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 z-50 flex justify-center items-center p-4 transition-opacity duration-300">
+        <div class="relative">
+            <img id="modal-image" src="" alt="Image Preview" class="max-w-full max-h-[90vh] rounded-lg shadow-2xl">
+            <button id="close-modal-button" class="absolute -top-3 -right-3 bg-white rounded-full p-2 text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // ===================================================================================
+        // INSTRUKSI GOOGLE SHEETS (TETAP SAMA)
+        // ===================================================================================
+        // ... (Bagian instruksi dan kode Apps Script tidak berubah dari versi sebelumnya) ...
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwdRYrk2FaR1hGQUGLhFy5qwF9qvLkDRhCbpUHgCpfDy9LRj0eGeKS_cDS0R7Oez-2rdg/exec";
+        // ===================================================================================
+
+        const form = document.getElementById('data-form');
+        const notification = document.getElementById('notification');
+        const submitButton = document.getElementById('submit-button');
+        const buttonText = document.getElementById('button-text');
+        const loadingSpinner = document.getElementById('loading-spinner');
+
+        // Elemen Modal Gambar
+        const imagePreviewModal = document.getElementById('image-preview-modal');
+        const modalImage = document.getElementById('modal-image');
+        const closeModalButton = document.getElementById('close-modal-button');
+
+        // Fungsi untuk menampilkan preview gambar di form utama
+        function previewFile(inputId, previewId, filenameId) {
+            const input = document.getElementById(inputId);
+            const preview = document.getElementById(previewId);
+            const filenameSpan = document.getElementById(filenameId);
+            const file = input.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                }
+                reader.readAsDataURL(file);
+                filenameSpan.textContent = file.name;
+            } else {
+                preview.classList.add('hidden');
+                filenameSpan.textContent = 'Belum ada file dipilih';
+            }
+        }
+
+        // Fungsi untuk mengubah file menjadi Base64
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // Fungsi untuk menampilkan notifikasi
+        function showNotification(message, isSuccess) {
+            notification.textContent = message;
+            notification.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800');
+            if (isSuccess) {
+                notification.classList.add('bg-green-100', 'text-green-800');
+            } else {
+                notification.classList.add('bg-red-100', 'text-red-800');
+            }
+            window.scrollTo(0, 0);
+        }
+
+        // Fungsi untuk menampilkan modal preview gambar
+        function showImagePreview(previewId) {
+            const previewImage = document.getElementById(previewId);
+            if (previewImage && !previewImage.classList.contains('hidden')) {
+                modalImage.src = previewImage.src;
+                imagePreviewModal.classList.remove('hidden');
+            }
+        }
+
+        // Fungsi untuk menyembunyikan modal preview gambar
+        function hideImagePreview() {
+            imagePreviewModal.classList.add('hidden');
+            modalImage.src = ''; // Hapus src untuk menghindari gambar lama muncul sekejap
+        }
+
+        // Event listener untuk tombol close dan background modal
+        closeModalButton.addEventListener('click', hideImagePreview);
+        imagePreviewModal.addEventListener('click', (e) => {
+            // Tutup jika yang diklik adalah background, bukan gambar itu sendiri
+            if (e.target.id === 'image-preview-modal') {
+                hideImagePreview();
+            }
+        });
+
+        // Event listener untuk form submission
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            if (!form.checkValidity()) {
+                showNotification("Harap isi semua kolom yang wajib diisi.", false);
+                Array.from(form.elements).forEach(el => {
+                    if (!el.validity.valid) {
+                       el.classList.add('border-red-500', 'ring-red-500');
+                    } else {
+                       el.classList.remove('border-red-500', 'ring-red-500');
+                    }
+                });
+                return;
+            }
+
+            if (SCRIPT_URL === "https://script.google.com/macros/s/AKfycbwdRYrk2FaR1hGQUGLhFy5qwF9qvLkDRhCbpUHgCpfDy9LRj0eGeKS_cDS0R7Oez-2rdg/exec") {
+                showNotification("Error: URL Google Apps Script belum diatur. Silakan ikuti instruksi di dalam kode.", false);
+                return;
+            }
+
+            // Tampilkan loading
+            submitButton.disabled = true;
+            buttonText.classList.add('hidden');
+            loadingSpinner.classList.remove('hidden');
+
+            try {
+                const ijazahInput = document.getElementById('ijazah-file');
+                const kkInput = document.getElementById('kk-file');
+                
+                let ijazahBase64 = null;
+                let ijazahFileName = null;
+                if (ijazahInput.files[0]) {
+                    ijazahBase64 = await fileToBase64(ijazahInput.files[0]);
+                    ijazahFileName = ijazahInput.files[0].name;
+                }
+
+                let kkBase64 = null;
+                let kkFileName = null;
+                if (kkInput.files[0]) {
+                    kkBase64 = await fileToBase64(kkInput.files[0]);
+                    kkFileName = kkInput.files[0].name;
+                }
+
+                const formData = {
+                    nama: document.getElementById('nama').value,
+                    tempatLahir: document.getElementById('tempat-lahir').value,
+                    tanggalLahir: document.getElementById('tanggal-lahir').value,
+                    nisn: document.getElementById('nisn').value,
+                    jurusan: document.getElementById('jurusan').value,
+                    ijazahFile: ijazahBase64,
+                    ijazahFileName: ijazahFileName,
+                    kkFile: kkBase64,
+                    kkFileName: kkFileName,
+                };
+                
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    cache: 'no-cache',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.result === "success") {
+                    showNotification("Data berhasil dikirim! Terima kasih.", true);
+                    form.reset();
+                    // Reset preview gambar
+                    document.getElementById('ijazah-preview').classList.add('hidden');
+                    document.getElementById('kk-preview').classList.add('hidden');
+                    document.getElementById('ijazah-filename').textContent = 'Belum ada file dipilih';
+                    document.getElementById('kk-filename').textContent = 'Belum ada file dipilih';
+                } else {
+                    throw new Error(result.message || 'Terjadi kesalahan saat mengirim data.');
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification("Gagal mengirim data. Silakan coba lagi. " + error.message, false);
+            } finally {
+                // Sembunyikan loading
+                submitButton.disabled = false;
+                buttonText.classList.remove('hidden');
+                loadingSpinner.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
