@@ -3,301 +3,279 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulir Pendaftaran Siswa Baru</title>
+    <title>Formulir Data Ijazah SD/MI</title>
+    <!-- Menggunakan Tailwind CSS untuk styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Custom font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
         }
-        input[type="text"], input[type="email"], textarea {
+        /* Style untuk input uppercase */
+        .uppercase-input {
             text-transform: uppercase;
         }
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+        /* Style untuk placeholder agar ikut uppercase */
+        .uppercase-input::placeholder {
+            text-transform: none;
         }
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-        .file-input-label {
-            cursor: pointer;
-            display: inline-block;
-            padding: 0.75rem 1.25rem;
+        /* Style untuk preview gambar */
+        .preview-container {
+            width: 100%;
+            min-height: 150px;
+            border: 2px dashed #d1d5db;
             border-radius: 0.5rem;
-            transition: all 0.2s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-color: #f9fafb;
         }
-        /* Style untuk modal preview gambar */
-        #image-preview-modal.hidden {
-            display: none;
+        .preview-image {
+            max-width: 100%;
+            max-height: 250px;
+            object-fit: cover;
+        }
+        .preview-text {
+            color: #6b7280;
+            text-align: center;
+        }
+        /* Style untuk tombol saat loading */
+        .button-loading {
+            cursor: not-allowed;
+            background-color: #3b82f6; /* a slightly lighter blue */
+            opacity: 0.7;
         }
     </style>
 </head>
-<body class="bg-gray-100">
-    <div class="w-full max-w-lg mx-auto bg-white rounded-xl shadow-lg p-6 sm:p-8 my-8">
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4 sm:p-6 lg:p-8">
+
+    <div class="w-full max-w-2xl bg-white p-6 sm:p-8 rounded-xl shadow-lg">
         <div class="text-center mb-8">
-            <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">Formulir Data Ijazah</h1>
-            <p class="text-gray-500 mt-2">Isi data dengan lengkap dan benar.</p>
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-800">Formulir Data Ijazah SD/MI</h1>
+            <p class="text-gray-500 mt-2">Mohon isi semua data dengan benar dan lengkap.</p>
         </div>
 
-        <div id="notification" class="hidden rounded-lg p-4 mb-6 text-sm"></div>
+        <!-- Form -->
+        <form id="ijazahForm" class="space-y-6">
 
-        <form id="data-form" class="space-y-6" novalidate>
             <!-- Nama -->
             <div>
-                <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">1. Nama Lengkap</label>
-                <input type="text" id="nama" name="Nama" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="SESUAI IJAZAH" required oninput="this.value = this.value.toUpperCase()">
+                <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                <input type="text" id="nama" name="nama" required
+                       class="uppercase-input block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150"
+                       placeholder="SESUAI DENGAN IJAZAH">
             </div>
+
             <!-- Tempat Lahir -->
             <div>
-                <label for="tempat-lahir" class="block text-sm font-medium text-gray-700 mb-1">2. Tempat Lahir</label>
-                <input type="text" id="tempat-lahir" name="Tempat Lahir" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="KOTA/KABUPATEN" required oninput="this.value = this.value.toUpperCase()">
+                <label for="tempatLahir" class="block text-sm font-medium text-gray-700 mb-1">Tempat Lahir</label>
+                <input type="text" id="tempatLahir" name="tempatLahir" required
+                       class="uppercase-input block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150"
+                       placeholder="KOTA/KABUPATEN KELAHIRAN">
             </div>
+
             <!-- Tanggal Lahir -->
             <div>
-                <label for="tanggal-lahir" class="block text-sm font-medium text-gray-700 mb-1">3. Tanggal Lahir</label>
-                <input type="date" id="tanggal-lahir" name="Tanggal Lahir" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
+                <label for="tanggalLahir" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir</label>
+                <input type="date" id="tanggalLahir" name="tanggalLahir" required
+                       class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-gray-700">
             </div>
+
             <!-- NISN -->
             <div>
-                <label for="nisn" class="block text-sm font-medium text-gray-700 mb-1">4. NISN</label>
-                <input type="number" id="nisn" name="NISN" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="10 DIGIT ANGKA" required>
+                <label for="nisn" class="block text-sm font-medium text-gray-700 mb-1">NISN (Nomor Induk Siswa Nasional)</label>
+                <input type="text" id="nisn" name="nisn" required pattern="\d{10}" title="NISN harus terdiri dari 10 digit angka"
+                       oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                       maxlength="10"
+                       class="block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150"
+                       placeholder="CONTOH: 0012345678">
             </div>
+            
             <!-- Pilihan Jurusan -->
             <div>
-                <label for="jurusan" class="block text-sm font-medium text-gray-700 mb-1">5. Pilihan Jurusan</label>
-                <select id="jurusan" name="Pilihan Jurusan" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required>
-                    <option value="" disabled selected>-- Pilih Salah Satu --</option>
-                    <option value="Agama 1">Agama 1</option>
-                    <option value="Agama 2">Agama 2</option>
-                    <option value="Tahfidz 1">Tahfidz 1</option>
-                    <option value="Tahfidz 2">Tahfidz 2</option>
-                    <option value="Reguler 1">Reguler 1</option>
-                    <option value="Reguler 2">Reguler 2</option>
-                    <option value="Reguler 3">Reguler 3</option>
-                    <option value="Reguler 4">Reguler 4</option>
-                    <option value="Reguler 5">Reguler 5</option>
-                    <option value="Reguler 6">Reguler 6</option>
-                    <option value="Reguler 7">Reguler 7</option>
+                <label for="jurusan" class="block text-sm font-medium text-gray-700 mb-1">Pilihan Jurusan</label>
+                <select id="jurusan" name="jurusan" required
+                        class="block w-full px-4 py-3 border border-gray-300 bg-white rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-150 text-gray-700">
+                    <option value="" disabled selected>-- PILIH JURUSAN --</option>
+                    <option value="Agama 1">AGAMA 1</option>
+                    <option value="Agama 2">AGAMA 2</option>
+                    <option value="Tahfidz 1">TAHFIDZ 1</option>
+                    <option value="Tahfidz 2">TAHFIDZ 2</option>
+                    <option value="Reguler 1">REGULER 1</option>
+                    <option value="Reguler 2">REGULER 2</option>
+                    <option value="Reguler 3">REGULER 3</option>
+                    <option value="Reguler 4">REGULER 4</option>
+                    <option value="Reguler 5">REGULER 5</option>
+                    <option value="Reguler 6">REGULER 6</option>
+                    <option value="Reguler 7">REGULER 7</option>
                 </select>
             </div>
+
             <!-- Upload Ijazah -->
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">6. Upload Ijazah SD/MI</label>
-                <p class="text-xs text-gray-500 mb-2">Format: JPG/PNG. Klik gambar untuk preview.</p>
-                <input type="file" id="ijazah-file" name="Ijazah" class="hidden" accept="image/*" onchange="previewFile('ijazah-file', 'ijazah-preview', 'ijazah-filename')">
-                <label for="ijazah-file" class="file-input-label bg-blue-50 text-blue-700 hover:bg-blue-100">Pilih File</label>
-                <span id="ijazah-filename" class="text-sm text-gray-600 ml-3">Belum ada file dipilih</span>
-                <img id="ijazah-preview" class="mt-4 rounded-lg hidden w-full max-w-xs mx-auto cursor-pointer hover:opacity-80 transition-opacity" alt="Preview Ijazah" onclick="showImagePreview('ijazah-preview')">
+                <label for="uploadIjazah" class="block text-sm font-medium text-gray-700 mb-2">Upload Ijazah SD/MI</label>
+                <p class="text-xs text-gray-500 mb-2">Hanya file foto (.jpg, .jpeg, .png). Pastikan semua tulisan terlihat jelas.</p>
+                <input type="file" id="uploadIjazah" name="uploadIjazah" required accept="image/png, image/jpeg, image/jpg"
+                       class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition">
+                <div id="ijazahPreview" class="mt-4 preview-container">
+                    <span class="preview-text">Preview Ijazah</span>
+                </div>
             </div>
+
             <!-- Upload KK -->
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">7. Upload KK Terbaru</label>
-                <p class="text-xs text-gray-500 mb-2">Format: JPG/PNG. Klik gambar untuk preview.</p>
-                <input type="file" id="kk-file" name="KK" class="hidden" accept="image/*" onchange="previewFile('kk-file', 'kk-preview', 'kk-filename')">
-                <label for="kk-file" class="file-input-label bg-blue-50 text-blue-700 hover:bg-blue-100">Pilih File</label>
-                <span id="kk-filename" class="text-sm text-gray-600 ml-3">Belum ada file dipilih</span>
-                <img id="kk-preview" class="mt-4 rounded-lg hidden w-full max-w-xs mx-auto cursor-pointer hover:opacity-80 transition-opacity" alt="Preview KK" onclick="showImagePreview('kk-preview')">
+                <label for="uploadKk" class="block text-sm font-medium text-gray-700 mb-2">Upload Kartu Keluarga (KK) Terbaru</label>
+                 <p class="text-xs text-gray-500 mb-2">Hanya file foto (.jpg, .jpeg, .png). Pastikan semua tulisan terlihat jelas.</p>
+                <input type="file" id="uploadKk" name="uploadKk" required accept="image/png, image/jpeg, image/jpg"
+                       class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 transition">
+                <div id="kkPreview" class="mt-4 preview-container">
+                    <span class="preview-text">Preview Kartu Keluarga</span>
+                </div>
             </div>
 
             <!-- Tombol Submit -->
             <div class="pt-4">
-                <button type="submit" id="submit-button" class="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all duration-300 flex items-center justify-center">
-                    <span id="button-text">Kirim Data</span>
-                    <svg id="loading-spinner" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
+                <button type="submit" id="submitButton"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg focus:outline-none focus:ring-4 focus:ring-blue-300 transition-transform transform hover:scale-105 duration-300 ease-in-out">
+                    Kirim Data
                 </button>
             </div>
         </form>
-    </div>
+        
+        <!-- Pesan Status -->
+        <div id="statusMessage" class="hidden mt-6 p-4 rounded-lg text-center"></div>
 
-    <!-- Modal untuk Preview GAMBAR -->
-    <div id="image-preview-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 z-50 flex justify-center items-center p-4 transition-opacity duration-300">
-        <div class="relative">
-            <img id="modal-image" src="" alt="Image Preview" class="max-w-full max-h-[90vh] rounded-lg shadow-2xl">
-            <button id="close-modal-button" class="absolute -top-3 -right-3 bg-white rounded-full p-2 text-gray-800 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-white">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
-            </button>
-        </div>
     </div>
 
     <script>
-        // ===================================================================================
-        // INSTRUKSI GOOGLE SHEETS (TETAP SAMA)
-        // ===================================================================================
-        // ... (Bagian instruksi dan kode Apps Script tidak berubah dari versi sebelumnya) ...
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwdRYrk2FaR1hGQUGLhFy5qwF9qvLkDRhCbpUHgCpfDy9LRj0eGeKS_cDS0R7Oez-2rdg/exec";
-        // ===================================================================================
+        // =================================================================================
+        // PASTE URL APLIKASI WEB ANDA DARI GOOGLE APPS SCRIPT DI SINI
+        // =================================================================================
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwdRYrk2FaR1hGQUGLhFy5qwF9qvLkDRhCbpUHgCpfDy9LRj0eGeKS_cDS0R7Oez-2rdg/exec"; 
+        // =================================================================================
 
-        const form = document.getElementById('data-form');
-        const notification = document.getElementById('notification');
-        const submitButton = document.getElementById('submit-button');
-        const buttonText = document.getElementById('button-text');
-        const loadingSpinner = document.getElementById('loading-spinner');
+        document.addEventListener('DOMContentLoaded', function() {
+            // Fungsi untuk mengubah input menjadi uppercase
+            const uppercaseInputs = document.querySelectorAll('.uppercase-input');
+            uppercaseInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    const start = this.selectionStart, end = this.selectionEnd;
+                    this.value = this.value.toUpperCase();
+                    this.setSelectionRange(start, end);
+                });
+            });
 
-        // Elemen Modal Gambar
-        const imagePreviewModal = document.getElementById('image-preview-modal');
-        const modalImage = document.getElementById('modal-image');
-        const closeModalButton = document.getElementById('close-modal-button');
-
-        // Fungsi untuk menampilkan preview gambar di form utama
-        function previewFile(inputId, previewId, filenameId) {
-            const input = document.getElementById(inputId);
-            const preview = document.getElementById(previewId);
-            const filenameSpan = document.getElementById(filenameId);
-            const file = input.files[0];
-
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.classList.remove('hidden');
-                }
-                reader.readAsDataURL(file);
-                filenameSpan.textContent = file.name;
-            } else {
-                preview.classList.add('hidden');
-                filenameSpan.textContent = 'Belum ada file dipilih';
+            // Fungsi untuk menampilkan preview gambar
+            function setupImagePreview(inputId, previewId) {
+                const inputElement = document.getElementById(inputId);
+                const previewElement = document.getElementById(previewId);
+                inputElement.addEventListener('change', function(event) {
+                    const file = event.target.files[0];
+                    if (file && file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            previewElement.innerHTML = `<img src="${e.target.result}" class="preview-image">`;
+                        }
+                        reader.readAsDataURL(file);
+                    } else {
+                        previewElement.innerHTML = `<span class="preview-text p-4">File tidak valid. Harap pilih file gambar.</span>`;
+                    }
+                });
             }
-        }
 
-        // Fungsi untuk mengubah file menjadi Base64
-        function fileToBase64(file) {
-            return new Promise((resolve, reject) => {
+            setupImagePreview('uploadIjazah', 'ijazahPreview');
+            setupImagePreview('uploadKk', 'kkPreview');
+            
+            // Menangani pengiriman form
+            const form = document.getElementById('ijazahForm');
+            const submitButton = document.getElementById('submitButton');
+            const statusMessage = document.getElementById('statusMessage');
+
+            form.addEventListener('submit', async function(event) {
+                event.preventDefault();
+
+                if (SCRIPT_URL === "PASTE_URL_ANDA_DI_SINI") {
+                    showStatus("Error: URL Script belum dimasukkan. Harap edit file HTML.", "error");
+                    return;
+                }
+
+                // Ubah tampilan tombol submit menjadi loading
+                submitButton.disabled = true;
+                submitButton.textContent = 'Mengirim Data...';
+                submitButton.classList.add('button-loading');
+                statusMessage.classList.add('hidden');
+
+                try {
+                    const ijazahFile = document.getElementById('uploadIjazah').files[0];
+                    const kkFile = document.getElementById('uploadKk').files[0];
+
+                    // Konversi file ke Base64
+                    const ijazahBase64 = await toBase64(ijazahFile);
+                    const kkBase64 = await toBase64(kkFile);
+
+                    const formData = {
+                        nama: document.getElementById('nama').value,
+                        tempatLahir: document.getElementById('tempatLahir').value,
+                        tanggalLahir: document.getElementById('tanggalLahir').value,
+                        nisn: document.getElementById('nisn').value,
+                        jurusan: document.getElementById('jurusan').value,
+                        ijazahFile: ijazahBase64,
+                        ijazahFileName: ijazahFile.name,
+                        kkFile: kkBase64,
+                        kkFileName: kkFile.name
+                    };
+                    
+                    const response = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors', // Diperlukan untuk Apps Script, meski kita tidak bisa membaca responsnya
+                        cache: 'no-cache',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData),
+                        redirect: 'follow'
+                    });
+                    
+                    // Karena mode 'no-cors', kita tidak bisa memeriksa status respons.
+                    // Kita anggap berhasil jika fetch tidak melempar error.
+                    showStatus("Terima kasih! Data Anda telah berhasil dikirim.", "success");
+                    form.reset();
+                    document.getElementById('ijazahPreview').innerHTML = '<span class="preview-text">Preview Ijazah</span>';
+                    document.getElementById('kkPreview').innerHTML = '<span class="preview-text">Preview Kartu Keluarga</span>';
+
+                } catch (error) {
+                    console.error('Error:', error);
+                    showStatus("Terjadi kesalahan saat mengirim data. Silakan coba lagi.", "error");
+                } finally {
+                    // Kembalikan tombol submit ke keadaan normal
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Kirim Data';
+                    submitButton.classList.remove('button-loading');
+                }
+            });
+
+            // Fungsi untuk mengubah file menjadi string Base64
+            const toBase64 = file => new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
                 reader.onload = () => resolve(reader.result);
                 reader.onerror = error => reject(error);
             });
-        }
 
-        // Fungsi untuk menampilkan notifikasi
-        function showNotification(message, isSuccess) {
-            notification.textContent = message;
-            notification.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800');
-            if (isSuccess) {
-                notification.classList.add('bg-green-100', 'text-green-800');
-            } else {
-                notification.classList.add('bg-red-100', 'text-red-800');
-            }
-            window.scrollTo(0, 0);
-        }
-
-        // Fungsi untuk menampilkan modal preview gambar
-        function showImagePreview(previewId) {
-            const previewImage = document.getElementById(previewId);
-            if (previewImage && !previewImage.classList.contains('hidden')) {
-                modalImage.src = previewImage.src;
-                imagePreviewModal.classList.remove('hidden');
-            }
-        }
-
-        // Fungsi untuk menyembunyikan modal preview gambar
-        function hideImagePreview() {
-            imagePreviewModal.classList.add('hidden');
-            modalImage.src = ''; // Hapus src untuk menghindari gambar lama muncul sekejap
-        }
-
-        // Event listener untuk tombol close dan background modal
-        closeModalButton.addEventListener('click', hideImagePreview);
-        imagePreviewModal.addEventListener('click', (e) => {
-            // Tutup jika yang diklik adalah background, bukan gambar itu sendiri
-            if (e.target.id === 'image-preview-modal') {
-                hideImagePreview();
-            }
-        });
-
-        // Event listener untuk form submission
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            if (!form.checkValidity()) {
-                showNotification("Harap isi semua kolom yang wajib diisi.", false);
-                Array.from(form.elements).forEach(el => {
-                    if (!el.validity.valid) {
-                       el.classList.add('border-red-500', 'ring-red-500');
-                    } else {
-                       el.classList.remove('border-red-500', 'ring-red-500');
-                    }
-                });
-                return;
-            }
-
-            if (SCRIPT_URL === "https://script.google.com/macros/s/AKfycbwdRYrk2FaR1hGQUGLhFy5qwF9qvLkDRhCbpUHgCpfDy9LRj0eGeKS_cDS0R7Oez-2rdg/exec") {
-                showNotification("Error: URL Google Apps Script belum diatur. Silakan ikuti instruksi di dalam kode.", false);
-                return;
-            }
-
-            // Tampilkan loading
-            submitButton.disabled = true;
-            buttonText.classList.add('hidden');
-            loadingSpinner.classList.remove('hidden');
-
-            try {
-                const ijazahInput = document.getElementById('ijazah-file');
-                const kkInput = document.getElementById('kk-file');
-                
-                let ijazahBase64 = null;
-                let ijazahFileName = null;
-                if (ijazahInput.files[0]) {
-                    ijazahBase64 = await fileToBase64(ijazahInput.files[0]);
-                    ijazahFileName = ijazahInput.files[0].name;
-                }
-
-                let kkBase64 = null;
-                let kkFileName = null;
-                if (kkInput.files[0]) {
-                    kkBase64 = await fileToBase64(kkInput.files[0]);
-                    kkFileName = kkInput.files[0].name;
-                }
-
-                const formData = {
-                    nama: document.getElementById('nama').value,
-                    tempatLahir: document.getElementById('tempat-lahir').value,
-                    tanggalLahir: document.getElementById('tanggal-lahir').value,
-                    nisn: document.getElementById('nisn').value,
-                    jurusan: document.getElementById('jurusan').value,
-                    ijazahFile: ijazahBase64,
-                    ijazahFileName: ijazahFileName,
-                    kkFile: kkBase64,
-                    kkFileName: kkFileName,
-                };
-                
-                const response = await fetch(SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'cors',
-                    cache: 'no-cache',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify(formData)
-                });
-
-                const result = await response.json();
-
-                if (result.result === "success") {
-                    showNotification("Data berhasil dikirim! Terima kasih.", true);
-                    form.reset();
-                    // Reset preview gambar
-                    document.getElementById('ijazah-preview').classList.add('hidden');
-                    document.getElementById('kk-preview').classList.add('hidden');
-                    document.getElementById('ijazah-filename').textContent = 'Belum ada file dipilih';
-                    document.getElementById('kk-filename').textContent = 'Belum ada file dipilih';
+            // Fungsi untuk menampilkan pesan status
+            function showStatus(message, type) {
+                statusMessage.textContent = message;
+                statusMessage.className = 'mt-6 p-4 rounded-lg text-center'; // Reset class
+                if (type === 'success') {
+                    statusMessage.classList.add('bg-green-100', 'border', 'border-green-400', 'text-green-700');
                 } else {
-                    throw new Error(result.message || 'Terjadi kesalahan saat mengirim data.');
+                    statusMessage.classList.add('bg-red-100', 'border', 'border-red-400', 'text-red-700');
                 }
-
-            } catch (error) {
-                console.error('Error:', error);
-                showNotification("Gagal mengirim data. Silakan coba lagi. " + error.message, false);
-            } finally {
-                // Sembunyikan loading
-                submitButton.disabled = false;
-                buttonText.classList.remove('hidden');
-                loadingSpinner.classList.add('hidden');
             }
         });
     </script>
+
 </body>
 </html>
